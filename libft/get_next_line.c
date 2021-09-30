@@ -6,13 +6,13 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 15:18:27 by mamartin          #+#    #+#             */
-/*   Updated: 2021/01/23 18:38:19 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/09/27 22:38:50 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 1
 
 static int		copy_buf(char **tmp, char *buf)
 {

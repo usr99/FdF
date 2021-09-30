@@ -1,17 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structures.h                                       :+:      :+:    :+:   */
+/*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 18:07:24 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/26 22:28:08 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/09/30 14:48:21 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
+
+/*
+** VECTOR STRUCTURE
+*/
+
+typedef struct s_vect
+{
+	double	x;
+	double	y;
+}	t_vect;
+
+/*
+** POINT STRUCTURE
+*/
+
+typedef struct s_point
+{
+	int	x;
+	int	y;
+	int	z;
+}	t_point;
 
 /*
 ** MAP STRUCTURE
@@ -22,9 +43,9 @@
 
 typedef struct s_map
 {
-	int	**arr;
-	int	x;
-	int	y;
+	t_point	**arr;
+	int		x;
+	int		y;
 }	t_map;
 
 /*
@@ -55,36 +76,76 @@ typedef struct s_image
 }	t_image;
 
 /*
+** CARTESIAN COORDINATES SYSTEM STRUCTURE
+*/
+
+typedef struct s_coordinates_sys
+{
+	t_vect	i;
+	t_vect	j;
+}	t_coordinates_sys;
+
+/*
+** GRID STRUCTURE
+*/
+
+typedef struct s_grid
+{
+	t_point				**array;
+	t_point				origin;
+	t_point				offset;
+	t_coordinates_sys	base;
+	t_coordinates_sys	actual;
+	t_point				size;
+	int					tilesize;
+	double				z_factor;
+}	t_grid;
+
+/*
+**	GRADIENT STRUCTURE
+*/
+
+typedef struct s_gradient
+{
+	int		shades[512];
+	int		smallest_z;
+	int		biggest_z;
+	char	state;
+}	t_gradient;
+
+/*
+**	KEY HANDLING STRUCTURE
+*/
+
+typedef struct s_key
+{
+	char	z;
+	char	q;
+	char	s;
+	char	d;
+	char	a;
+	char	e;
+	char	kp_plus;
+	char	kp_minus;
+	char	kp_up;
+	char	kp_left;
+	char	kp_down;
+	char	kp_right;
+}	t_keyhandle;
+
+/*
 ** WINDOW STRUCTURE
 */
 
 typedef struct s_win
 {
-	void	*mlx;
-	void	*window;
-	t_image	screen;
-	t_map	map;
+	void		*mlx;
+	void		*window;
+	t_image		screen;
+	t_map		map;
+	t_grid		grid;
+	t_gradient	gradient;
+	t_keyhandle	keys;
 }	t_win;
-
-/*
-** VECTOR STRUCTURE
-*/
-
-typedef struct s_vect
-{
-	double	x;
-	double	y;
-}	t_vect;
-
-/*
-** POINT STRUCTURE
-*/
-
-typedef struct s_point
-{
-	int	x;
-	int	y;
-	int	z;
-}	t_point;
 
 #endif
