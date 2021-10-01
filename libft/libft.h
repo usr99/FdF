@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 16:52:13 by mamartin          #+#    #+#             */
-/*   Updated: 2021/03/07 18:04:16 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/09/30 23:25:24 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,6 @@ int				get_next_line(int fd, char **line);
 void			ft_free_map(char **map);
 t_list			*ft_lstdup(t_list *src, int length);
 char			*ft_clearstr(char *str);
+int				ft_atoi_base(char *str, char *base);
 
 #endif

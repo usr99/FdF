@@ -39,7 +39,8 @@ SRCS	= ft_memset.c				\
 			btree_create_node.c		\
 			btree_insert_data.c		\
 			btree_search_item.c		\
-			btree_clear.c
+			btree_clear.c			\
+			ft_atoi_base.c
 OBJS	= ${SRCS:.c=.o}
 BONUS_C	= ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
 		  ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c ft_lstdup.c ft_itoa_base.c \

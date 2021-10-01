@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 23:55:07 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/28 22:12:52 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/01 04:24:46 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,11 @@ int	realloc_map(t_map *map)
 	map->arr = tmp;
 	map->y++;
 	return (0);
+}
+
+int	is_in_screen(t_point p)
+{
+	if (p.x >= 0 && p.x < WIN_WIDTH && p.y >= 0 && p.y < WIN_HEIGHT)
+		return (TRUE);
+	return (FALSE);
 }

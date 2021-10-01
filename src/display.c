@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 18:10:37 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/30 14:51:01 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/01 17:16:17 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ int	display_wireframe(t_map map)
 	refresh_display(&win);
 	mlx_do_key_autorepeatoff(win.mlx);
 	mlx_hook(win.window, 33, 0L, &exit_program_success, &win);
-	mlx_hook(win.window, 2, 1L << 0, &handle_keypress, &win);
+	mlx_hook(win.window, 2, 1L, &handle_keypress, &win);
 	mlx_hook(win.window, 3, 1L << 1, &handle_keyrelease, &win);
+	mlx_hook(win.window, 4, 1L << 2, &handle_buttonpress, &win);
+	mlx_hook(win.window, 5, 1L << 3, &handle_buttonrelease, &win);
+	mlx_hook(win.window, 6, 1L << 6, &handle_pointer_motion, &win);
 	mlx_loop_hook(win.mlx, &refresh_display, &win);
 	mlx_loop(win.mlx);
 	return (0);
@@ -48,7 +51,7 @@ int	create_window(t_win *win, t_map map)
 	int	i;
 	int	j;
 
-	i = 255;
+	i = GRADIENT_SIZE / 2 - 1;
 	j = 0;
 	while (i >= 0)
 	{
@@ -56,7 +59,7 @@ int	create_window(t_win *win, t_map map)
 		i--;
 		j++;
 	}
-	i = 255;
+	i = GRADIENT_SIZE / 2 - 1;
 	while (i >= 0)
 	{
 		win->gradient.shades[j] = 0xFF0000 | i << 8;
@@ -82,7 +85,8 @@ int	create_window(t_win *win, t_map map)
 	}
 	win->gradient.state = -1;
 	ft_memset(&win->keys, FALSE, sizeof(t_keyhandle));
-
+	win->keys.last_offset.x = 0;
+	win->keys.last_offset.y = 0;
 	return (0);
 }
 
@@ -132,6 +136,8 @@ void	to_iso_coordinates(t_grid *grid, t_map map)
 			// z axis
 			grid->array[i][j].y -= map.arr[i][j].z * grid->tilesize * grid->z_factor;
 			grid->array[i][j].z = map.arr[i][j].z;
+
+			grid->array[i][j].color = map.arr[i][j].color;
 			j++;
 		}
 		i++;
@@ -168,6 +174,9 @@ void	draw_line(t_image *screen, t_point from, t_point to, t_gradient gradient)
 	t_vect	err_init;
 	int		i;
 
+	if (!is_in_screen(from) && !is_in_screen(to))
+		return ;
+
 	px = from;
 	err.x = abs(to.x - from.x);
 	err.y = abs(to.y - from.y);
@@ -194,19 +203,24 @@ void	draw_line(t_image *screen, t_point from, t_point to, t_gradient gradient)
 	range = gradient.biggest_z - gradient.smallest_z;
 	if (!range)
 		range = 1;
-	index1 = ((from.z - gradient.smallest_z) * 511) / range;
-	index2 = ((to.z - gradient.smallest_z) * 511) / range;
+	index1 = ((from.z - gradient.smallest_z) * (GRADIENT_SIZE - 1)) / range;
+	index2 = ((to.z - gradient.smallest_z) * (GRADIENT_SIZE - 1)) / range;
 
 	dist = index2 - index1;
 
 	i = 0;
-	color = 0xFFFFFF;
+	color = from.color;
 	if (err_init.x > err_init.y)
 	{
 		while (i <= err_init.x)
 		{
 			if (gradient.state == 1)
-				color = gradient.shades[(int)(index1 + i * dist / err_init.x)];
+			{
+				if (err_init.x)
+					color = gradient.shades[(int)(index1 + i * dist / err_init.x)];
+				else
+					color = gradient.shades[(int)(index1 + i * dist / 1)];
+			}
 			put_pixel(screen, px, color);
 			err.x -= delta.y;
 			if (err.x < 0)
@@ -223,7 +237,12 @@ void	draw_line(t_image *screen, t_point from, t_point to, t_gradient gradient)
 		while (i <= err_init.y)
 		{
 			if (gradient.state == 1)
-				color = gradient.shades[(int)(index1 + i * dist / err_init.y)];
+			{
+				if (err_init.y)
+					color = gradient.shades[(int)(index1 + i * dist / err_init.y)];
+				else
+					color = gradient.shades[(int)(index1 + i * dist / 1)];
+			}
 			put_pixel(screen, px, color);
 			err.y -= delta.x;
 			if (err.y < 0)
@@ -239,7 +258,7 @@ void	draw_line(t_image *screen, t_point from, t_point to, t_gradient gradient)
 
 void	put_pixel(t_image *screen, t_point pixel, int color)
 {
-	if (pixel.x < 0 || pixel.x >= WIN_WIDTH || pixel.y < 0 || pixel.y >= WIN_HEIGHT)
+	if (!is_in_screen(pixel))
 		return ;
 	screen->addr[pixel.x + pixel.y * (screen->size_line / 4)] = color;
 }
@@ -269,7 +288,6 @@ void	clear_screen(t_image *screen)
 
 int	refresh_display(t_win *win)
 {
-	for (int i = 0 ; i < 1500000 ; i++);
 	handle_event(&win->grid, win->keys);
 	refresh_iso_grid(&win->grid, win->map);
 	to_iso_coordinates(&win->grid, win->map);

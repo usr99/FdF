@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 23:44:03 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/30 01:26:31 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/01 04:25:14 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		refresh_display(t_win *win);
 
 int		parse_file(int fd, t_map *map);
 int		get_row(int fd, t_row *row);
-int		check_filename(char *filename);
+int		get_color(char *str);
 
 /*
 ** EVENT
@@ -57,6 +57,9 @@ int		check_filename(char *filename);
 
 int		handle_keypress(int key, t_win *win);
 int		handle_keyrelease(int key, t_win *win);
+int		handle_buttonpress(int button, int x, int y, t_win *win);
+int		handle_buttonrelease(int button, int x, int y, t_win *win);
+int		handle_pointer_motion(int x, int y, t_win *win);
 void	handle_event(t_grid *grid, t_keyhandle key_info);
 void	reset_display(t_win *win);
 
@@ -79,5 +82,6 @@ int		exit_program_success(t_win *win);
 t_point	**alloc_map(int x, int y);
 t_point	**copy_map(t_point **src, t_point **dest, int x, int y);
 int		realloc_map(t_map *map);
+int		is_in_screen(t_point p);
 
 #endif

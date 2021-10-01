@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 21:29:42 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/30 14:49:01 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/01 04:22:56 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,7 @@
 
 int	handle_keypress(int key, t_win *win)
 {
-	if (key == XK_z)
-		win->keys.z = TRUE;
-	else if (key == XK_s)
-		win->keys.s = TRUE;
-	else if (key == XK_q)
-		win->keys.q = TRUE;
-	else if (key == XK_d)
-		win->keys.d = TRUE;
-	else if (key == XK_a)
-		win->keys.a = TRUE;
-	else if (key == XK_e)
-		win->keys.e = TRUE;
-	else if (key == XK_KP_Add)
+	if (key == XK_KP_Add)
 		win->keys.kp_plus = TRUE;
 	else if (key == XK_KP_Subtract)
 		win->keys.kp_minus = TRUE;
@@ -41,43 +29,57 @@ int	handle_keypress(int key, t_win *win)
 
 int	handle_keyrelease(int key, t_win *win)
 {
-	if (key == XK_z)
-		win->keys.z = FALSE;
-	else if (key == XK_s)
-		win->keys.s = FALSE;
-	else if (key == XK_q)
-		win->keys.q = FALSE;
-	else if (key == XK_d)
-		win->keys.d = FALSE;
-	else if (key == XK_a)
-		win->keys.a = FALSE;
-	else if (key == XK_e)
-		win->keys.e = FALSE;
-	else if (key == XK_KP_Add)
+	if (key == XK_KP_Add)
 		win->keys.kp_plus = FALSE;
 	else if (key == XK_KP_Subtract)
 		win->keys.kp_minus = FALSE;
 	return (0);
 }
 
+int	handle_buttonpress(int button, int x, int y, t_win *win)
+{
+	if (button == BUTTON_LEFT)
+	{
+		win->keys.button1 = TRUE;
+		win->keys.cursor.x = x;
+		win->keys.cursor.y = y;
+	}
+	else if (button == WHEEL_UP)
+		zoom(&win->grid, IN);
+	else if (button == WHEEL_DOWN)
+		zoom(&win->grid, OUT);
+	return (0);
+}
+
+int	handle_buttonrelease(int button, int x, int y, t_win *win)
+{
+	(void)x;
+	(void)y;
+	if (button == 1)
+	{
+		win->keys.button1 = FALSE;
+		win->keys.last_offset.x = win->grid.offset.x;
+		win->keys.last_offset.y = win->grid.offset.y;
+	}
+	return (0);
+}
+
+int	handle_pointer_motion(int x, int y, t_win *win)
+{
+	if (win->keys.button1)
+	{
+		win->grid.offset.x = win->keys.last_offset.x + x - win->keys.cursor.x;
+		win->grid.offset.y = win->keys.last_offset.y + y - win->keys.cursor.y;
+	}
+	return (0);
+}
+
 void	handle_event(t_grid *grid, t_keyhandle key_info)
 {
-	if (key_info.z)
-		translate(&grid->offset.y, UP, MAX_TRANSLATION_Y);
-	if (key_info.q)
-		translate(&grid->offset.x, LEFT, MAX_TRANSLATION_X);
-	if (key_info.s)
-		translate(&grid->offset.y, DOWN, MAX_TRANSLATION_Y);
-	if (key_info.d)
-		translate(&grid->offset.x, RIGHT, MAX_TRANSLATION_X);
-	if (key_info.a)
-		z_factor(grid, -Z_FACT_INCR);
-	if (key_info.e)
-		z_factor(grid, Z_FACT_INCR);
 	if (key_info.kp_plus)
-		zoom(grid, IN);
+		z_factor(grid, Z_FACT_INCR);
 	if (key_info.kp_minus)
-		zoom(grid, OUT);
+		z_factor(grid, -Z_FACT_INCR);
 }
 
 void	reset_display(t_win *win)

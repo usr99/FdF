@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 22:04:47 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/30 01:15:21 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/09/30 23:54:43 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (exit_error("Bad argument.\n", ERR_ARGUMENT));
-	if (check_filename(argv[1]) != 0)
-		return (exit_error("Bad filename.\n", ERR_FILE));
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		return (exit_error("Can't open file.\n", ERR_FILE));

@@ -6,12 +6,14 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 18:07:24 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/30 14:48:21 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/01 04:29:49 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
+
+# include "defines.h"
 
 /*
 ** VECTOR STRUCTURE
@@ -32,6 +34,7 @@ typedef struct s_point
 	int	x;
 	int	y;
 	int	z;
+	int	color;
 }	t_point;
 
 /*
@@ -107,7 +110,7 @@ typedef struct s_grid
 
 typedef struct s_gradient
 {
-	int		shades[512];
+	int		shades[GRADIENT_SIZE];
 	int		smallest_z;
 	int		biggest_z;
 	char	state;
@@ -117,20 +120,13 @@ typedef struct s_gradient
 **	KEY HANDLING STRUCTURE
 */
 
-typedef struct s_key
+typedef struct s_keyhandle
 {
-	char	z;
-	char	q;
-	char	s;
-	char	d;
-	char	a;
-	char	e;
 	char	kp_plus;
 	char	kp_minus;
-	char	kp_up;
-	char	kp_left;
-	char	kp_down;
-	char	kp_right;
+	char	button1;
+	t_point	cursor;
+	t_point	last_offset;
 }	t_keyhandle;
 
 /*

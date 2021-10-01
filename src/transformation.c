@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 00:38:50 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/30 01:29:18 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/01 01:42:01 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@ void	zoom(t_grid *grid, int direction)
 		grid->tilesize = MAX_ZOOM;
 	else if (grid->tilesize < MIN_ZOOM)
 		grid->tilesize = MIN_ZOOM;
-}
-
-void	translate(int *axis, int direction, int max)
-{
-	*axis += TRANSLATION_STEP * direction;
-	if (abs(*axis) >= max)
-		*axis = max * direction;
 }
 
 void	z_factor(t_grid *grid, float direction)

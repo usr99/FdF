@@ -6,29 +6,11 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 23:55:03 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/29 20:15:56 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/01 02:25:54 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
-
-int	check_filename(char *filename)
-{
-	size_t	len;
-	char	*str;
-
-	str = ft_strrchr(filename, '/');
-	if (!str)
-		str = filename + 1;
-	else
-		str++;
-	len = ft_strlen(str);
-	if (len < 5)
-		return (2);
-	else if (ft_strncmp(str + len - 4, ".fdf", 4) != 0)
-		return (2);
-	return (0);
-}
 
 int		parse_file(int fd, t_map *map)
 {
@@ -51,6 +33,7 @@ int		parse_file(int fd, t_map *map)
 			map->arr[map->y - 1][i].x = i;
 			map->arr[map->y - 1][i].y = map->y - 1;
 			map->arr[map->y - 1][i].z = ft_atoi(row.array[i]);
+			map->arr[map->y - 1][i].color = get_color(row.array[i]);
 			i++;
 		}
 		free_2d_array((void **)row.array, row.size);
@@ -84,4 +67,26 @@ int	get_row(int fd, t_row *row)
 	while (row->array[row->size])
 		row->size++;
 	return (ret);
+}
+
+int	get_color(char *str)
+{
+	char	*hexcode;
+	int		color;
+	int		i;
+
+	hexcode = ft_strchr(str, ',');
+	if (!hexcode)
+		return (COLOR_WHITE);
+	hexcode = ft_strnstr(hexcode, ",0x", 3);
+	if (!hexcode)
+		return (COLOR_WHITE);
+	hexcode += 3;
+	i = -1;
+	while (hexcode[++i])
+		hexcode[i] = ft_toupper(hexcode[i]);
+	color = ft_atoi_base(hexcode, "0123456789ABCDEF");
+	if (color)
+		return (color);
+	return (COLOR_WHITE);
 }
