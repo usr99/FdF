@@ -6,11 +6,20 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 00:38:50 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/01 01:42:01 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/01 23:22:58 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
+
+void	rotate(double *rot, double direction)
+{
+	*rot += direction;
+	if (*rot > 2 * M_PI)
+		*rot = 0;
+	if (*rot < 0)
+		*rot = 2 * M_PI;
+}
 
 void	zoom(t_grid *grid, int direction)
 {

@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 23:44:03 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/01 04:25:14 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 01:56:04 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	put_pixel(t_image *screen, t_point pixel, int color);
 void	refresh_iso_grid(t_grid *grid, t_map map);
 void	clear_screen(t_image *screen);
 int		refresh_display(t_win *win);
+void	reset_display(t_win *win);
 
 /*
 ** PARSING
@@ -52,23 +53,27 @@ int		get_row(int fd, t_row *row);
 int		get_color(char *str);
 
 /*
-** EVENT
+** KEYBOARD EVENTS
 */
 
+void	handle_event(t_grid *grid, t_keyhandle key_info);
 int		handle_keypress(int key, t_win *win);
 int		handle_keyrelease(int key, t_win *win);
+
+/*
+** MOUSE EVENTS
+*/
+
 int		handle_buttonpress(int button, int x, int y, t_win *win);
 int		handle_buttonrelease(int button, int x, int y, t_win *win);
 int		handle_pointer_motion(int x, int y, t_win *win);
-void	handle_event(t_grid *grid, t_keyhandle key_info);
-void	reset_display(t_win *win);
 
 /*
 ** MATHS TRANSFORMATIONS
 */
 
 void	zoom(t_grid *grid, int direction);
-void	translate(int *axis, int direction, int max);
+void	rotate(double *rot, double direction);
 void	z_factor(t_grid *grid, float direction);
 
 /*

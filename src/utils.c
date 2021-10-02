@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 23:55:07 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/01 04:24:46 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 01:54:16 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	exit_program_success(t_win *win)
 
 t_point	**alloc_map(int x, int y)
 {
-	t_point **array;
+	t_point	**array;
 	int		i;
 
 	i = 0;

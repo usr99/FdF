@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 18:07:24 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/01 04:29:49 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 02:22:43 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ typedef struct s_grid
 	t_point				**array;
 	t_point				origin;
 	t_point				offset;
-	t_coordinates_sys	base;
-	t_coordinates_sys	actual;
+	t_coordinates_sys	system;
+	double				rot;
 	t_point				size;
 	int					tilesize;
 	double				z_factor;
@@ -122,10 +122,14 @@ typedef struct s_gradient
 
 typedef struct s_keyhandle
 {
+	char	a;
+	char	d;
 	char	kp_plus;
 	char	kp_minus;
 	char	button1;
-	t_point	cursor;
+	char	button2;
+	t_point	cursor_button1;
+	int		cursor_button2_x;
 	t_point	last_offset;
 }	t_keyhandle;
 

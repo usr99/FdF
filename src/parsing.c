@@ -6,13 +6,13 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 23:55:03 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/01 02:25:54 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 02:28:16 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 
-int		parse_file(int fd, t_map *map)
+int	parse_file(int fd, t_map *map)
 {
 	t_row	row;
 	int		ret;

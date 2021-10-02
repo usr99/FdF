@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 18:10:37 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/01 17:16:17 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 02:15:24 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ int	display_wireframe(t_map map)
 		return (-1);
 	refresh_display(&win);
 	mlx_do_key_autorepeatoff(win.mlx);
-	mlx_hook(win.window, 33, 0L, &exit_program_success, &win);
-	mlx_hook(win.window, 2, 1L, &handle_keypress, &win);
-	mlx_hook(win.window, 3, 1L << 1, &handle_keyrelease, &win);
-	mlx_hook(win.window, 4, 1L << 2, &handle_buttonpress, &win);
-	mlx_hook(win.window, 5, 1L << 3, &handle_buttonrelease, &win);
-	mlx_hook(win.window, 6, 1L << 6, &handle_pointer_motion, &win);
+	mlx_hook(win.window, ClientMessage, 0L, &exit_program_success, &win);
+	mlx_hook(win.window, KeyPress, 1L, &handle_keypress, &win);
+	mlx_hook(win.window, KeyRelease, 1L << 1, &handle_keyrelease, &win);
+	mlx_hook(win.window, ButtonPress, 1L << 2, &handle_buttonpress, &win);
+	mlx_hook(win.window, ButtonRelease, 1L << 3, &handle_buttonrelease, &win);
+	mlx_hook(win.window, MotionNotify, 1L << 6, &handle_pointer_motion, &win);
 	mlx_loop_hook(win.mlx, &refresh_display, &win);
 	mlx_loop(win.mlx);
 	return (0);
@@ -55,14 +55,14 @@ int	create_window(t_win *win, t_map map)
 	j = 0;
 	while (i >= 0)
 	{
-		win->gradient.shades[j] = 0xFFFF00 | i;
+		win->gradient.shades[j] = COLOR_YELLOW | i;
 		i--;
 		j++;
 	}
 	i = GRADIENT_SIZE / 2 - 1;
 	while (i >= 0)
 	{
-		win->gradient.shades[j] = 0xFF0000 | i << 8;
+		win->gradient.shades[j] = COLOR_RED | i << 8;
 		i--;
 		j++;
 	}
@@ -85,8 +85,8 @@ int	create_window(t_win *win, t_map map)
 	}
 	win->gradient.state = -1;
 	ft_memset(&win->keys, FALSE, sizeof(t_keyhandle));
-	win->keys.last_offset.x = 0;
-	win->keys.last_offset.y = 0;
+	win->keys.offset_button1.x = 0;
+	win->keys.offset_button1.y = 0;
 	return (0);
 }
 
@@ -100,11 +100,7 @@ int	create_iso_grid(t_grid *grid, t_map map)
 	else
 		grid->tilesize = WIN_HEIGHT / map.y;
 
-	grid->base.i.x = 0.5 * 1;
-	grid->base.i.y = 0.25 * 1;
-	grid->base.j.x = -0.5 * 1;
-	grid->base.j.y = 0.25 * 1;
-	
+	grid->rot = ROTATION_DEFAULT;
 	grid->offset.x = 0;
 	grid->offset.y = 0;
 	grid->z_factor = Z_FACT_DEFAULT;
@@ -125,9 +121,9 @@ void	to_iso_coordinates(t_grid *grid, t_map map)
 		{
 			// iso distorsion
 			grid->array[i][j].x
-				= map.arr[i][j].x * grid->actual.i.x + map.arr[i][j].y * grid->actual.j.x;
+				= map.arr[i][j].x * grid->system.i.x + map.arr[i][j].y * grid->system.j.x;
 			grid->array[i][j].y
-				= map.arr[i][j].x * grid->actual.i.y + map.arr[i][j].y * grid->actual.j.y;
+				= map.arr[i][j].x * grid->system.i.y + map.arr[i][j].y * grid->system.j.y;
 
 			// offset
 			grid->array[i][j].x += grid->origin.x;
@@ -146,9 +142,9 @@ void	to_iso_coordinates(t_grid *grid, t_map map)
 
 void	draw(t_win *win)
 {
-	int i;
-	int j;
-	
+	int	i;
+	int	j;
+
 	i = 0;
 	while (i < win->map.y)
 	{
@@ -260,17 +256,18 @@ void	put_pixel(t_image *screen, t_point pixel, int color)
 {
 	if (!is_in_screen(pixel))
 		return ;
-	screen->addr[pixel.x + pixel.y * (screen->size_line / 4)] = color;
+	screen->addr[pixel.x + pixel.y * (screen->size_line / BYTES_PER_PIXEL)] = color;
 }
 
 void	refresh_iso_grid(t_grid *grid, t_map map)
 {
-	grid->actual.i.x = grid->base.i.x * grid->tilesize;
-	grid->actual.i.y = grid->base.i.y * grid->tilesize;
-	grid->actual.j.x = grid->base.j.x * grid->tilesize;
-	grid->actual.j.y = grid->base.j.y * grid->tilesize;
-	grid->size.x = map.x * grid->actual.i.x + map.y * grid->actual.j.x;
-	grid->size.y = map.x * grid->actual.i.y + map.y * grid->actual.j.y;
+	grid->system.i.x = IVECT_X_DEFAULT * grid->tilesize * cos(grid->rot);
+	grid->system.i.y = IVECT_Y_DEFAULT * grid->tilesize * sin(grid->rot);
+	grid->system.j.x = JVECT_X_DEFAULT * grid->tilesize * sin(grid->rot);
+	grid->system.j.y = JVECT_Y_DEFAULT * grid->tilesize * cos(grid->rot);
+	
+	grid->size.x = map.x * grid->system.i.x + map.y * grid->system.j.x;
+	grid->size.y = map.x * grid->system.i.y + map.y * grid->system.j.y;
 	grid->origin.x = (WIN_WIDTH - grid->size.x) / 2 + grid->offset.x;
 	grid->origin.y = (WIN_HEIGHT - grid->size.y) / 2 + grid->offset.y;
 }
@@ -295,4 +292,16 @@ int	refresh_display(t_win *win)
 	draw(win);
 	mlx_put_image_to_window(win->mlx, win->window, win->screen.img, 0, 0);
 	return (0);
+}
+
+void	reset_display(t_win *win)
+{
+	win->grid.offset.x = 0;
+	win->grid.offset.y = 0;
+	win->grid.rot = ROTATION_DEFAULT;
+	win->grid.z_factor = Z_FACT_DEFAULT;
+	if (win->map.x > win->map.y)
+		win->grid.tilesize = WIN_WIDTH / win->map.x;
+	else
+		win->grid.tilesize = WIN_HEIGHT / win->map.y;
 }

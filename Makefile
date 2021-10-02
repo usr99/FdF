@@ -2,7 +2,7 @@ NAME		= fdf
 INC			= ./inc
 LIBFT		= libft/libft.a
 MLX			= minilibx/libmlx.a
-SRC			= fdf.c parsing.c display.c event.c transformation.c utils.c
+SRC			= fdf.c parsing.c display.c keyboard_event.c mouse_event.c transformation.c utils.c
 OBJ_DIR		= objs/
 OBJ			= ${addprefix ${OBJ_DIR}, ${SRC:.c=.o}}
 CC			= gcc

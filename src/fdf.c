@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 22:04:47 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/30 23:54:43 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 01:52:08 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,3 @@ int	main(int argc, char **argv)
 		return (exit_error("Malloc failed.", ERR_MALLOC));
 	return (0);
 }
-
-
