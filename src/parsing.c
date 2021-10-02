@@ -6,11 +6,26 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 23:55:03 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/02 02:28:16 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 18:15:32 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
+
+int	check_filename(char *filename)
+{
+	char	*str;
+
+	str = ft_strrchr(filename, '.');
+	if (!str)
+		return (2);
+	else
+	{
+		if (ft_strncmp(str + ft_strlen(str) - 4, ".fdf", 4) != 0)
+			return (2);
+	}
+	return (0);
+}
 
 int	parse_file(int fd, t_map *map)
 {

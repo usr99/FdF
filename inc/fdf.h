@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 23:44:03 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/02 01:56:04 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 18:12:38 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	reset_display(t_win *win);
 int		parse_file(int fd, t_map *map);
 int		get_row(int fd, t_row *row);
 int		get_color(char *str);
+int		check_filename(char *filename);
 
 /*
 ** KEYBOARD EVENTS
