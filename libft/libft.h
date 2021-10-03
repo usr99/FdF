@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 16:52:13 by mamartin          #+#    #+#             */
-/*   Updated: 2021/09/30 23:25:24 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/03 18:37:38 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 
-typedef struct	s_list
+typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }				t_list;
 
-typedef struct	s_btree
+typedef struct s_btree
 {
 	struct s_btree	*left;
 	struct s_btree	*right;

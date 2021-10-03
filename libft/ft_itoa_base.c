@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 20:50:45 by mamartin          #+#    #+#             */
-/*   Updated: 2020/12/06 23:43:30 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/03 18:37:06 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	check_base(char *base)
 	return (i);
 }
 
-char		*ft_itoa_base(unsigned long long nbr, char *base)
+char	*ft_itoa_base(unsigned long long nbr, char *base)
 {
 	int		size_n;
 	int		size_base;

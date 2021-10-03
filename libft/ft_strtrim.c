@@ -6,13 +6,13 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 18:39:50 by mamartin          #+#    #+#             */
-/*   Updated: 2020/11/28 14:52:34 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/03 18:35:57 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./libft.h"
 
-static int		ft_ischarset(char c, char const *charset)
+static int	ft_ischarset(char c, char const *charset)
 {
 	int	i;
 
@@ -43,7 +43,7 @@ static size_t	ft_strlen_nocharset(char const *s, char const *charset)
 		return (i_end - i_start + 1);
 }
 
-char			*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
 	size_t	length;
 	char	*trim;

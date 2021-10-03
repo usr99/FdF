@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 15:18:27 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/02 23:01:35 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/03 18:43:03 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #define BUFFER_SIZE 4096
 
-static int		copy_buf(char **tmp, char *buf)
+static int	copy_buf(char **tmp, char *buf)
 {
 	char	*save;
 	int		index;
@@ -37,7 +37,7 @@ static int		copy_buf(char **tmp, char *buf)
 	return (1);
 }
 
-static int		copy_line(char **line, char **tmp)
+static int	copy_line(char **line, char **tmp)
 {
 	if (*tmp)
 	{
@@ -57,7 +57,7 @@ static int		copy_line(char **line, char **tmp)
 	return (0);
 }
 
-static int		search_newline(char **line, char *buf, char **tmp)
+static int	search_newline(char **line, char *buf, char **tmp)
 {
 	int	index;
 
@@ -72,7 +72,7 @@ static int		search_newline(char **line, char *buf, char **tmp)
 	return (1);
 }
 
-static int		check_tmp(char *tmp, char **line)
+static int	check_tmp(char *tmp, char **line)
 {
 	int		i;
 
@@ -91,7 +91,7 @@ static int		check_tmp(char *tmp, char **line)
 	return (1);
 }
 
-int				get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	static char	*tmp = NULL;
 	char		buf[BUFFER_SIZE + 1];
@@ -99,9 +99,10 @@ int				get_next_line(int fd, char **line)
 
 	if (fd < 0 || !line || BUFFER_SIZE < 1)
 		return (-1);
-	if ((ret = check_tmp(tmp, line)) != 0)
-		return (ret);
-	while ((ret = read(fd, buf, BUFFER_SIZE)))
+	if (check_tmp(tmp, line) != 0)
+		return (1);
+	ret = read(fd, buf, BUFFER_SIZE);
+	while (ret)
 	{
 		if (ret == -1)
 			return (-1);
@@ -114,6 +115,7 @@ int				get_next_line(int fd, char **line)
 				return (-1);
 			return (1);
 		}
+		ret = read(fd, buf, BUFFER_SIZE);
 	}
 	return (copy_line(line, &tmp));
 }

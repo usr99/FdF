@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <mamartin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 00:28:47 by user42            #+#    #+#             */
-/*   Updated: 2020/11/26 21:27:37 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/03 18:38:19 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static char	**copy_strings(char **split, char const *s, char sep, int nb)
 	return (split);
 }
 
-char		**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	int		nb_words;
 	char	**split;

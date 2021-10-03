@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/19 00:28:30 by mamartin          #+#    #+#             */
-/*   Updated: 2020/11/21 19:45:54 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/03 18:38:11 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static	int	sz_num(int n)
 		return (sz_num(n / 10) + 1);
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	int		size_n;
 	long	nbr;

@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 17:34:03 by mamartin          #+#    #+#             */
-/*   Updated: 2021/03/07 20:15:47 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/03 18:37:47 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	clear(t_btree *root, void (*del)(void *))
 	free(root);
 }
 
-void		btree_clear(t_btree **root, void (*del)(void *))
+void	btree_clear(t_btree **root, void (*del)(void *))
 {
 	if (*root == NULL)
 		return ;

@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 18:10:37 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/03 19:21:49 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 19:29:47 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int	display_wireframe(t_map map)
 	mlx_do_key_autorepeatoff(win.mlx);
 	mlx_hook(win.window, ClientMessage, 0L, &exit_program_success, &win);
 	mlx_hook(win.window, KeyPress, 1L, &handle_keypress, &win);
+	mlx_hook(win.window, KeyRelease, 1L << 1, &handle_keyrelease, &win);
+	mlx_hook(win.window, ButtonPress, 1L << 2, &handle_buttonpress, &win);
+	mlx_hook(win.window, ButtonRelease, 1L << 3, &handle_buttonrelease, &win);
+	mlx_hook(win.window, MotionNotify, 1L << 6, &handle_pointer_motion, &win);
 	mlx_loop_hook(win.mlx, &refresh_display, &win);
 	mlx_loop(win.mlx);
 	return (0);
@@ -42,6 +46,10 @@ int	create_window(t_win *win, t_map map)
 		return (-1);
 	win->screen.addr = (unsigned int *)mlx_get_data_addr(win->screen.img,
 			&win->screen.bpp, &win->screen.size_line, &win->screen.endian);
+	create_gradient(win, map);
+	ft_memset(&win->keys, FALSE, sizeof(t_keyhandle));
+	win->keys.last_offset.x = 0;
+	win->keys.last_offset.y = 0;
 	return (0);
 }
 
@@ -58,15 +66,7 @@ int	create_iso_grid(t_grid *grid, t_map map)
 	grid->offset.x = 0;
 	grid->offset.y = 0;
 	grid->z_factor = Z_FACT_DEFAULT;
-	grid->system.i.x = IVECT_X_DEFAULT * grid->tilesize * cos(grid->rot);
-	grid->system.i.y = IVECT_Y_DEFAULT * grid->tilesize * sin(grid->rot);
-	grid->system.j.x = JVECT_X_DEFAULT * grid->tilesize * sin(grid->rot);
-	grid->system.j.y = JVECT_Y_DEFAULT * grid->tilesize * cos(grid->rot);
-	grid->size.x = map.x * grid->system.i.x + map.y * grid->system.j.x;
-	grid->size.y = map.x * grid->system.i.y + map.y * grid->system.j.y;
-	grid->origin.x = (WIN_WIDTH - grid->size.x) / 2 + grid->offset.x;
-	grid->origin.y = (WIN_HEIGHT - grid->size.y) / 2 + grid->offset.y;
-	to_iso_coordinates(grid, map);
+	refresh_iso_grid(grid, map);
 	return (0);
 }
 
