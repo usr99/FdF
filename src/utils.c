@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 23:55:07 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/02 01:54:16 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 19:30:09 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,64 +59,10 @@ int	exit_program_success(t_win *win)
 	return (0);
 }
 
-t_point	**alloc_map(int x, int y)
+void	put_pixel(t_image *screen, t_point pixel, int color)
 {
-	t_point	**array;
-	int		i;
-
-	i = 0;
-	array = malloc(sizeof(t_point *) * y);
-	if (!array)
-		return (NULL);
-	while (i < y)
-	{
-		array[i] = malloc(sizeof(t_point) * x);
-		if (!array[i])
-		{
-			free_2d_array((void **)array, i);
-			return (NULL);
-		}
-		i++;
-	}
-	return (array);
-}
-
-t_point	**copy_map(t_point **src, t_point **dest, int x, int y)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < y)
-	{
-		j = 0;
-		while (j < x)
-		{
-			dest[i][j] = src[i][j];
-			j++;
-		}
-		i++;
-	}
-	return (dest);
-}
-
-int	realloc_map(t_map *map)
-{
-	t_point	**tmp;
-
-	tmp = alloc_map(map->x, map->y + 1);
-	if (!tmp)
-		return (-1);
-	tmp = copy_map(map->arr, tmp, map->x, map->y);
-	free_2d_array((void **)map->arr, map->y);
-	map->arr = tmp;
-	map->y++;
-	return (0);
-}
-
-int	is_in_screen(t_point p)
-{
-	if (p.x >= 0 && p.x < WIN_WIDTH && p.y >= 0 && p.y < WIN_HEIGHT)
-		return (TRUE);
-	return (FALSE);
+	if (!is_in_screen(pixel))
+		return ;
+	screen->addr[pixel.x + pixel.y * (screen->size_line / BYTES_PER_PIXEL)]
+		= color;
 }

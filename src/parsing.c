@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 23:55:03 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/02 18:15:32 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/03 02:53:13 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	parse_file(int fd, t_map *map)
 {
 	t_row	row;
 	int		ret;
-	int		i;
 
 	ret = get_row(fd, &row);
 	map->x = row.size;
@@ -42,16 +41,7 @@ int	parse_file(int fd, t_map *map)
 			free_2d_array((void **)row.array, row.size);
 			return (-1);
 		}
-		i = 0;
-		while (i < row.size)
-		{
-			map->arr[map->y - 1][i].x = i;
-			map->arr[map->y - 1][i].y = map->y - 1;
-			map->arr[map->y - 1][i].z = ft_atoi(row.array[i]);
-			map->arr[map->y - 1][i].color = get_color(row.array[i]);
-			i++;
-		}
-		free_2d_array((void **)row.array, row.size);
+		fill_array(&row, map, map->y - 1);
 		ret = get_row(fd, &row);
 	}
 	free_2d_array((void **)row.array, row.size);
@@ -61,7 +51,7 @@ int	parse_file(int fd, t_map *map)
 		if (ret == -1)
 			return (-1);
 		else
-			return (2);
+			return (finish_reading(fd, row.array));
 	}
 	return (0);
 }
@@ -82,6 +72,22 @@ int	get_row(int fd, t_row *row)
 	while (row->array[row->size])
 		row->size++;
 	return (ret);
+}
+
+void	fill_array(t_row *row, t_map *map, int y)
+{
+	int	i;
+
+	i = 0;
+	while (i < row->size)
+	{
+		map->arr[y][i].x = i;
+		map->arr[y][i].y = y;
+		map->arr[y][i].z = ft_atoi(row->array[i]);
+		map->arr[y][i].color = get_color(row->array[i]);
+		i++;
+	}
+	free_2d_array((void **)row->array, row->size);
 }
 
 int	get_color(char *str)

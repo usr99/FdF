@@ -6,9 +6,12 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 00:42:30 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/02 02:23:32 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 18:29:15 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef DEFINES_H
+# define DEFINES_H
 
 /*
 ** WINDOW
@@ -56,10 +59,10 @@
 ** EVENTS
 */
 
-# define BUTTON_LEFT		Button1
-# define BUTTON_RIGHT		Button3
-# define WHEEL_UP			Button4
-# define WHEEL_DOWN			Button5
+# define BUTTON_LEFT		1
+# define BUTTON_RIGHT		3
+# define WHEEL_UP			4
+# define WHEEL_DOWN			5
 # define MOUSE_SENSITIVITY	500
 
 /*
@@ -68,3 +71,5 @@
 
 # define TRUE				1
 # define FALSE				0
+
+#endif

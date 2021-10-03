@@ -6,7 +6,7 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/02 01:54:22 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/02 02:25:45 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 18:17:18 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,15 @@ int	handle_pointer_motion(int x, int y, t_win *win)
 {
 	if (win->keys.button1)
 	{
-		win->grid.offset.x = win->keys.last_offset.x + x - win->keys.cursor_button1.x;
-		win->grid.offset.y = win->keys.last_offset.y + y - win->keys.cursor_button1.y;
+		win->grid.offset.x
+			= win->keys.last_offset.x + x - win->keys.cursor_button1.x;
+		win->grid.offset.y
+			= win->keys.last_offset.y + y - win->keys.cursor_button1.y;
 	}
 	if (win->keys.button2)
 	{
-		win->grid.rot -= (x - win->keys.cursor_button2_x) * 2 * M_PI / MOUSE_SENSITIVITY;
+		win->grid.rot
+			-= (x - win->keys.cursor_button2_x) * 2 * M_PI / MOUSE_SENSITIVITY;
 		win->keys.cursor_button2_x = x;
 	}
 	return (0);

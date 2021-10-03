@@ -6,12 +6,12 @@
 /*   By: mamartin <mamartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 18:07:24 by mamartin          #+#    #+#             */
-/*   Updated: 2021/10/02 02:22:43 by mamartin         ###   ########.fr       */
+/*   Updated: 2021/10/02 19:00:50 by mamartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTURES_H
-# define STRUCTURES_H
+#ifndef TYPES_H
+# define TYPES_H
 
 # include "defines.h"
 
@@ -64,6 +64,44 @@ typedef struct s_row_str
 }	t_row;
 
 /*
+**	GRADIENT STRUCTURE
+*/
+
+typedef struct s_gradient
+{
+	int		shades[GRADIENT_SIZE];
+	int		smallest_z;
+	int		biggest_z;
+	char	state;
+}	t_gradient;
+
+/*
+** COLOR LINE STRUCTURE
+*/
+
+typedef struct s_line_color
+{
+	int			from;
+	int			to;
+	int			range;
+	int			dist;
+	t_gradient	*gradient;
+}	t_line_color;
+
+/*
+** LINE STRUCTURE
+*/
+
+typedef struct s_line
+{
+	t_point			delta;
+	t_point			dir;
+	t_vect			err;
+	t_vect			err_init;
+	t_line_color	color;
+}	t_line;
+
+/*
 ** IMAGE STRUCTURE
 */
 
@@ -103,18 +141,6 @@ typedef struct s_grid
 	int					tilesize;
 	double				z_factor;
 }	t_grid;
-
-/*
-**	GRADIENT STRUCTURE
-*/
-
-typedef struct s_gradient
-{
-	int		shades[GRADIENT_SIZE];
-	int		smallest_z;
-	int		biggest_z;
-	char	state;
-}	t_gradient;
 
 /*
 **	KEY HANDLING STRUCTURE
